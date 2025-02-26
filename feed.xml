@@ -1,0 +1,37 @@
+---
+layout: nil
+---
+
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:webfeeds="http://webfeeds.org/rss/1.0">
+
+  <title>{{ site.title | xml_escape }}</title>
+  <link href="{{ site.url }}/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/" rel="alternate"/>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>{{ site.url }}/</id>
+  
+  <author>
+    <name>{{ site.author.name }}</name>
+  </author>
+
+  <!-- Webfeeds metadata for RSS readers -->
+  <webfeeds:cover image="{{ site.url }}{{ site.feed.cover }}" />
+  <webfeeds:icon>{{ site.url }}{{ site.feed.icon }}</webfeeds:icon>
+  <webfeeds:logo>{{ site.url }}{{ site.feed.logo }}</webfeeds:logo>
+  <webfeeds:accentColor>{{ site.feed.accent_color }}</webfeeds:accentColor>
+  <webfeeds:related layout="card" target="browser"/>
+
+  {% for post in site.posts %}
+    <entry>
+      <title>{{ post.title | xml_escape }}</title>
+      <link href="{{ site.url }}{{ post.url }}"/>
+      <updated>{{ post.date | date_to_xmlschema }}</updated>
+      <id>{{ site.url }}{{ post.url }}"/></id>
+      <content type="html">
+      <![CDATA[ {{ post.content }} ]]>
+      </content>
+    </entry>
+  {% endfor %}
+
+</feed>

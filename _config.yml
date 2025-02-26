@@ -36,7 +36,8 @@ feed:
   description: Updates and releases for Sonatype Integrations
   language: en # Language of your content
   logo: /assets/logo.png
-  icon: /assets/logo.png
+  icon: /assets/favicon.png
+  accent_color: "67a43e"
   author: # Optional author information
     name: Sonatype
     email: docs@sonatype.com
