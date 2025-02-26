@@ -10,4 +10,4 @@ categories:
 
 Sonatype CLI now presents both detailed Lifecyle report and Developer priority page links in the console output.
 
-[Learn more about Sonatype IQ CLI ](https://help.sonatype.com/en/sonatype-iq-cli.html)
+[Learn more about Sonatype IQ CLI ](https://help.sonatype.com/en/sonatype-iq-cli.html){:target="_blank"}
