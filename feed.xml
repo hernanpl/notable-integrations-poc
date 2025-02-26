@@ -16,7 +16,6 @@ layout: nil
   </author>
 
   <!-- Webfeeds metadata for RSS readers -->
-  <webfeeds:cover image="{{ site.url }}{{ site.feed.cover }}" />
   <webfeeds:icon>{{ site.url }}{{ site.feed.icon }}</webfeeds:icon>
   <webfeeds:logo>{{ site.url }}{{ site.feed.logo }}</webfeeds:logo>
   <webfeeds:accentColor>{{ site.feed.accent_color }}</webfeeds:accentColor>
