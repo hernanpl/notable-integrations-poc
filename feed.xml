@@ -3,34 +3,52 @@ layout: nil
 ---
 
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:webfeeds="http://webfeeds.org/rss/1.0">
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll</generator>
 
-  <title>{{ site.title | xml_escape }}</title>
-  <link href="{{ site.url }}/feed.xml" rel="self"/>
-  <link href="{{ site.url }}/" rel="alternate"/>
-  <updated>{{ site.time | date_to_xmlschema }}</updated>
-  <id>{{ site.url }}/</id>
+  <link href="{{ site.url }}{{ site.baseurl }}/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="{{ site.url }}{{ site.baseurl }}/" rel="alternate" type="text/html" />
   
-  <author>
-    <name>{{ site.author.name }}</name>
-  </author>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>{{ site.url }}{{ site.baseurl }}/feed.xml</id>
+  <title type="html">{{ site.title | xml_escape }}</title>
+  <subtitle>{{ site.description | xml_escape }}</subtitle>
 
-  <!-- Webfeeds metadata for RSS readers -->
-  <webfeeds:icon>{{ site.url }}{{ site.feed.icon }}</webfeeds:icon>
-  <webfeeds:logo>{{ site.url }}{{ site.feed.logo }}</webfeeds:logo>
-  <webfeeds:accentColor>{{ site.feed.accent_color }}</webfeeds:accentColor>
-  <webfeeds:related layout="card" target="browser"/>
+  <logo>{{ site.url }}{{ site.baseurl }}{{ site.feed.logo }}</logo>
 
   {% for post in site.posts %}
+    {% assign external_link = "" %}
+    
+    {% assign content_words = post.content | split: ' ' %}
+    {% for word in content_words %}
+      {% if word contains 'http' and word contains '://' %}
+        {% assign clean_url = word | replace: 'href="', '' | replace: '">', '' | replace: '"', '' | replace: "'", '' %}
+        {% assign external_link = clean_url %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
     <entry>
-      <title>{{ post.title | xml_escape }}</title>
-      <link href="{{ site.url }}{{ post.url }}"/>
+      <title type="html">{{ post.title | xml_escape }}</title>
+      <link href="{% if external_link != "" %}{{ external_link }}{% else %}{{ site.url }}{{ post.url | relative_url }}{% endif %}" 
+            rel="alternate" type="text/html" title="{{ post.title | xml_escape }}" />
+      <published>{{ post.date | date_to_xmlschema }}</published>
       <updated>{{ post.date | date_to_xmlschema }}</updated>
-      <id>{{ site.url }}{{ post.url }}/></id>
-      <content type="html">
-      <![CDATA[ {{ post.content }} ]]>
+      <id>{{ site.url }}{{ post.url | relative_url }}</id>
+      <content type="html" xml:base="{{ site.url }}{{ post.url | relative_url }}">
+        <![CDATA[ {{ post.content }} ]]>
       </content>
+      <author>
+        <name>{{ post.author | default: "Unknown" }}</name>
+      </author>
+      
+      {% for category in post.categories %}
+      <category term="{{ category }}" />
+      {% endfor %}
+      
+      <summary type="html">
+        <![CDATA[ {{ post.excerpt | xml_escape }} ]]>
+      </summary>
     </entry>
   {% endfor %}
-
 </feed>
